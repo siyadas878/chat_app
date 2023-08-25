@@ -1,6 +1,8 @@
 import 'package:chat_app/presentation/screens/signup_screen/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import '../../../application/login_provider/login_provider.dart';
 import '../../../core/contants.dart';
 import '../../widgets/teal_button.dart';
 import '../../widgets/text_field.dart';
@@ -14,7 +16,7 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: tealColor,
-        title:const Text('LogIn'),
+        title: const Text('LogIn'),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -32,14 +34,22 @@ class LoginScreen extends StatelessWidget {
               style: TextStyle(color: tealColor, fontSize: 13),
             ),
             SizedBox(height: size.height * 0.03),
-            RoundedTealTextFormField(labelText: 'email'),
+            RoundedTealTextFormField(labelText: 'email',
+            controller: context.read<LoginProvider>().emailController,),
             SizedBox(height: size.height * 0.03),
-            RoundedTealTextFormField(labelText: 'Password', obscureText: false),
+            RoundedTealTextFormField(labelText: 'Password',
+            controller: context.read<LoginProvider>().passwordController
+            , obscureText: false),
             SizedBox(height: size.height * 0.03),
             TealLoginButton(
-              onPressed: () async {},
+              onPressed: () async {
+                final loginProvider =
+                    Provider.of<LoginProvider>(context, listen: false);
+
+                loginProvider.loginUser(context);
+              },
               text: 'LogIn',
-              isLoading: false,
+              isLoading: Provider.of<LoginProvider>(context).isLoading,
             ),
             SizedBox(height: size.height * 0.03),
             Row(
