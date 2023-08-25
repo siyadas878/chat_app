@@ -20,56 +20,59 @@ class LoginScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              FontAwesomeIcons.message,
-              color: tealColor,
-              size: 100,
-            ),
-            SizedBox(height: size.height * 0.07),
-            const Text(
-              'Create your account',
-              style: TextStyle(color: tealColor, fontSize: 13),
-            ),
-            SizedBox(height: size.height * 0.03),
-            RoundedTealTextFormField(labelText: 'email',
-            controller: context.read<LoginProvider>().emailController,),
-            SizedBox(height: size.height * 0.03),
-            RoundedTealTextFormField(labelText: 'Password',
-            controller: context.read<LoginProvider>().passwordController
-            , obscureText: false),
-            SizedBox(height: size.height * 0.03),
-            TealLoginButton(
-              onPressed: () async {
-                final loginProvider =
-                    Provider.of<LoginProvider>(context, listen: false);
-
-                loginProvider.loginUser(context);
-              },
-              text: 'LogIn',
-              isLoading: Provider.of<LoginProvider>(context).isLoading,
-            ),
-            SizedBox(height: size.height * 0.03),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text('Don’t have account? Let’s '),
-                InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SignUpScreen()));
-                    },
-                    child: const Text(
-                      'Sign Up',
-                      style: TextStyle(color: tealColor),
-                    ))
-              ],
-            )
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: size.height * 0.14),
+              const Icon(
+                FontAwesomeIcons.message,
+                color: tealColor,
+                size: 100,
+              ),
+              SizedBox(height: size.height * 0.07),
+              const Text(
+                'Create your account',
+                style: TextStyle(color: tealColor, fontSize: 13),
+              ),
+              SizedBox(height: size.height * 0.03),
+              RoundedTealTextFormField(labelText: 'email',
+              controller: context.read<LoginProvider>().emailController,),
+              SizedBox(height: size.height * 0.03),
+              RoundedTealTextFormField(labelText: 'Password',
+              controller: context.read<LoginProvider>().passwordController
+              , obscureText: false),
+              SizedBox(height: size.height * 0.03),
+              TealLoginButton(
+                onPressed: () async {
+                  final loginProvider =
+                      Provider.of<LoginProvider>(context, listen: false);
+        
+                  loginProvider.loginUser(context);
+                },
+                text: 'LogIn',
+                isLoading: Provider.of<LoginProvider>(context).isLoading,
+              ),
+              SizedBox(height: size.height * 0.03),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('Don’t have account? Let’s '),
+                  InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SignUpScreen()));
+                      },
+                      child: const Text(
+                        'Sign Up',
+                        style: TextStyle(color: tealColor),
+                      ))
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

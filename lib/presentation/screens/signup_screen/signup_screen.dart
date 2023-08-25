@@ -24,95 +24,98 @@ class SignUpScreen extends StatelessWidget {
       body: SafeArea(
         child: Consumer<ImageProviderClass>(
           builder: (context, imagepic, child) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Create your account',
-                  style: TextStyle(color: tealColor, fontSize: 13),
-                ),
-                SizedBox(height: size.height * 0.03),
-                Container(
-                  width: size.width * 0.3,
-                  height: size.height * 0.15,
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 5, color: tealColor),
-                    shape: BoxShape.circle,
+            return SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: size.height * 0.1),
+                  const Text(
+                    'Create your account',
+                    style: TextStyle(color: tealColor, fontSize: 13),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: GestureDetector(
-                      onTap: () => imagepic.getImageFromGallery(context),
-                      child: ClipOval(
-                        child: Container(
-                          width: size.width * 0.3,
-                          height: size.height * 0.15,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                          ),
-                          child: imagepic.imgPath != null
-                              ? Image.file(
-                                  File(imagepic.imgPath!),
-                                  fit: BoxFit.cover,
-                                )
-                              : const Center(
-                                  child: Icon(
-                                    FontAwesomeIcons.userTie,
-                                    size: 50,
+                  SizedBox(height: size.height * 0.03),
+                  Container(
+                    width: size.width * 0.3,
+                    height: size.height * 0.15,
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 5, color: tealColor),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: GestureDetector(
+                        onTap: () => imagepic.getImageFromGallery(context),
+                        child: ClipOval(
+                          child: Container(
+                            width: size.width * 0.3,
+                            height: size.height * 0.15,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: imagepic.imgPath != null
+                                ? Image.file(
+                                    File(imagepic.imgPath!),
+                                    fit: BoxFit.cover,
+                                  )
+                                : const Center(
+                                    child: Icon(
+                                      FontAwesomeIcons.userTie,
+                                      size: 50,
+                                    ),
                                   ),
-                                ),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(height: size.height * 0.03),
-                RoundedTealTextFormField(
-                  labelText: 'name',
-                  controller: context.read<SignUpProvider>().nameController,
-                ),
-                SizedBox(height: size.height * 0.03),
-                RoundedTealTextFormField(
-                    labelText: 'email',
-                    controller: context.read<SignUpProvider>().emailController),
-                SizedBox(height: size.height * 0.03),
-                RoundedTealTextFormField(
-                    labelText: 'Password',
-                    controller:
-                        context.read<SignUpProvider>().passwordController,
-                    obscureText: false),
-                SizedBox(height: size.height * 0.03),
-                TealLoginButton(
-                    onPressed: () async {
-                      try {
-                        Provider.of<SignUpProvider>(context, listen: false)
-                            .signUpUser(context, imagepic.imageUrl.toString());
-                        await Future.delayed(const Duration(seconds: 2));
-                        // ignore: use_build_context_synchronously
-                        context.read<ImageProviderClass>().clearImage();
-                      } catch (e) {
-                        log(e.toString());
-                      }
-                    },
-                    text: 'Sign Up',
-                    isLoading: Provider.of<SignUpProvider>(context).isLoading),
-                SizedBox(height: size.height * 0.03),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('Let’s go to, '),
-                    InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
+                  SizedBox(height: size.height * 0.03),
+                  RoundedTealTextFormField(
+                    labelText: 'name',
+                    controller: context.read<SignUpProvider>().nameController,
+                  ),
+                  SizedBox(height: size.height * 0.03),
+                  RoundedTealTextFormField(
+                      labelText: 'email',
+                      controller: context.read<SignUpProvider>().emailController),
+                  SizedBox(height: size.height * 0.03),
+                  RoundedTealTextFormField(
+                      labelText: 'Password',
+                      controller:
+                          context.read<SignUpProvider>().passwordController,
+                      obscureText: false),
+                  SizedBox(height: size.height * 0.03),
+                  TealLoginButton(
+                      onPressed: () async {
+                        try {
+                          Provider.of<SignUpProvider>(context, listen: false)
+                              .signUpUser(context, imagepic.imageUrl.toString());
+                          await Future.delayed(const Duration(seconds: 2));
+                          // ignore: use_build_context_synchronously
+                          context.read<ImageProviderClass>().clearImage();
+                        } catch (e) {
+                          log(e.toString());
+                        }
                       },
-                      child: const Text(
-                        'Log In',
-                        style: TextStyle(color: tealColor),
-                      ),
-                    )
-                  ],
-                )
-              ],
+                      text: 'Sign Up',
+                      isLoading: Provider.of<SignUpProvider>(context).isLoading),
+                  SizedBox(height: size.height * 0.03),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Let’s go to, '),
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          'Log In',
+                          style: TextStyle(color: tealColor),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
             );
           },
           // child:
