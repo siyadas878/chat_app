@@ -16,16 +16,24 @@ class SplashScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.teal[500],
       body: SafeArea(
-        child:Center(
-          child: Column(mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(FontAwesomeIcons.message,size: 80,),
-              SizedBox(height: size.height*0.02,),
-              Text('ChatApp',style: TextStyle(fontSize: 25),)
-              ],
-          ),
-        )
-      ),
+          child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              FontAwesomeIcons.message,
+              size: 80,
+            ),
+            SizedBox(
+              height: size.height * 0.02,
+            ),
+            Text(
+              'ChatApp',
+              style: TextStyle(fontSize: 25),
+            )
+          ],
+        ),
+      )),
     );
   }
 }

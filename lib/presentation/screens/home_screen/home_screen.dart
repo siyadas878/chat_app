@@ -1,5 +1,5 @@
 import 'package:chat_app/core/contants.dart';
-import 'package:chat_app/presentation/screens/search_screen/search_screen.dart';
+import 'package:chat_app/presentation/screens/home_screen/widgets/floating_button.dart';
 import 'package:chat_app/presentation/screens/update_screen/update_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,18 +14,21 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:const Text('Messenger'),
+        title: const Text('Messenger'),
         backgroundColor: tealColor,
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: PopupMenuButton(
-              child:const Icon(FontAwesomeIcons.ellipsisVertical),
+              child: const Icon(FontAwesomeIcons.ellipsisVertical),
               onSelected: (value) {
-                if (value==0) {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) =>const UpdateScreen(),));
-                }
-                else if (value == 1) {
+                if (value == 0) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const UpdateScreen(),
+                      ));
+                } else if (value == 1) {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
@@ -82,24 +85,21 @@ class HomeScreen extends StatelessWidget {
           )
         ],
       ),
-      body: SafeArea(child: ListView.builder(
-        padding:const EdgeInsets.symmetric(horizontal: 5),
+      body: SafeArea(
+          child: ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 5),
         itemCount: 10,
         itemBuilder: (context, index) {
           return const ListTile(
-            leading: CircleAvatar(radius: 35,),
+            leading: CircleAvatar(
+              radius: 35,
+            ),
             title: Text('title'),
             subtitle: Text('subtitle'),
           );
         },
       )),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: tealColor,
-        child:const Icon(FontAwesomeIcons.addressBook),
-        onPressed: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) =>const SearchScreen(),));
-      },
-      ),
+      floatingActionButton: const FloatingButton(),
     );
   }
 }

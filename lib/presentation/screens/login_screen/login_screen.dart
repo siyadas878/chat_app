@@ -36,18 +36,21 @@ class LoginScreen extends StatelessWidget {
                 style: TextStyle(color: tealColor, fontSize: 13),
               ),
               SizedBox(height: size.height * 0.03),
-              RoundedTealTextFormField(labelText: 'email',
-              controller: context.read<LoginProvider>().emailController,),
+              RoundedTealTextFormField(
+                labelText: 'email',
+                controller: context.read<LoginProvider>().emailController,
+              ),
               SizedBox(height: size.height * 0.03),
-              RoundedTealTextFormField(labelText: 'Password',
-              controller: context.read<LoginProvider>().passwordController
-              , obscureText: false),
+              RoundedTealTextFormField(
+                  labelText: 'Password',
+                  controller: context.read<LoginProvider>().passwordController,
+                  obscureText: false),
               SizedBox(height: size.height * 0.03),
               TealLoginButton(
                 onPressed: () async {
                   final loginProvider =
                       Provider.of<LoginProvider>(context, listen: false);
-        
+
                   loginProvider.loginUser(context);
                 },
                 text: 'LogIn',

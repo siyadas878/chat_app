@@ -1,3 +1,4 @@
+import 'package:chat_app/presentation/screens/message_screen/message_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../application/profile_data_provider/get_all_user.dart';
@@ -48,7 +49,9 @@ class SearchScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: size.height*0.02,),
+            SizedBox(
+              height: size.height * 0.02,
+            ),
             Expanded(
               child: Consumer<GetallUsersProvider>(
                 builder: (context, value, child) {
@@ -69,16 +72,22 @@ class SearchScreen extends StatelessWidget {
                         }
 
                         return ListView.separated(
-                          separatorBuilder: (context, index) => SizedBox(height: size.height*0.02,),
+                          separatorBuilder: (context, index) => SizedBox(
+                            height: size.height * 0.02,
+                          ),
                           itemCount: userList.length,
                           itemBuilder: (context, index) {
                             final user = userList[index];
                             return ListTile(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen(fromId: user.uid.toString()),));
+                              },
                               leading: CircleAvatar(
                                 radius: 30,
-                                backgroundImage: NetworkImage(user.imgpath.toString()),
+                                backgroundImage:
+                                    NetworkImage(user.imgpath.toString()),
                               ),
-                              title: Text(user.name!),                              
+                              title: Text(user.name!),
                             );
                           },
                         );

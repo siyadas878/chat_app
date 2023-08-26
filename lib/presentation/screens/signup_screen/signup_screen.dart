@@ -76,7 +76,8 @@ class SignUpScreen extends StatelessWidget {
                   SizedBox(height: size.height * 0.03),
                   RoundedTealTextFormField(
                       labelText: 'email',
-                      controller: context.read<SignUpProvider>().emailController),
+                      controller:
+                          context.read<SignUpProvider>().emailController),
                   SizedBox(height: size.height * 0.03),
                   RoundedTealTextFormField(
                       labelText: 'Password',
@@ -88,7 +89,8 @@ class SignUpScreen extends StatelessWidget {
                       onPressed: () async {
                         try {
                           Provider.of<SignUpProvider>(context, listen: false)
-                              .signUpUser(context, imagepic.imageUrl.toString());
+                              .signUpUser(
+                                  context, imagepic.imageUrl.toString());
                           await Future.delayed(const Duration(seconds: 2));
                           // ignore: use_build_context_synchronously
                           context.read<ImageProviderClass>().clearImage();
@@ -97,7 +99,8 @@ class SignUpScreen extends StatelessWidget {
                         }
                       },
                       text: 'Sign Up',
-                      isLoading: Provider.of<SignUpProvider>(context).isLoading),
+                      isLoading:
+                          Provider.of<SignUpProvider>(context).isLoading),
                   SizedBox(height: size.height * 0.03),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

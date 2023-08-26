@@ -1,4 +1,5 @@
 import 'package:chat_app/application/login_provider/login_provider.dart';
+import 'package:chat_app/application/message_provider/message_provider.dart';
 import 'package:chat_app/application/profile_data_provider/get_profile_data.dart';
 import 'package:chat_app/application/profile_data_provider/update_profile.dart';
 import 'package:chat_app/application/profile_data_provider/update_provider.dart';
@@ -13,7 +14,7 @@ import 'package:provider/provider.dart';
 
 import 'application/profile_data_provider/get_all_user.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
@@ -29,30 +30,34 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => AddUserDetailsProvider(),
         ),
-         ChangeNotifierProvider(
+        ChangeNotifierProvider(
           create: (context) => ImageProviderClass(),
         ),
-         ChangeNotifierProvider(
+        ChangeNotifierProvider(
           create: (context) => LoginProvider(),
         ),
-         ChangeNotifierProvider(
+        ChangeNotifierProvider(
           create: (context) => SignUpProvider(),
         ),
-         ChangeNotifierProvider(
+        ChangeNotifierProvider(
           create: (context) => UpdateProvider(),
         ),
-         ChangeNotifierProvider(
+        ChangeNotifierProvider(
           create: (context) => GetProfileData(),
         ),
-         ChangeNotifierProvider(
+        ChangeNotifierProvider(
           create: (context) => UpdateUser(),
         ),
         ChangeNotifierProvider(
           create: (context) => GetallUsersProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => MessageCreationProvider(),
+        ),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Chat App',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: Colors.teal,
           primarySwatch: Colors.teal,

@@ -12,7 +12,9 @@ import '../../widgets/teal_button.dart';
 import '../../widgets/text_field.dart';
 
 class UpdateScreen extends StatelessWidget {
-  const UpdateScreen({Key? key,}) : super(key: key);
+  const UpdateScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

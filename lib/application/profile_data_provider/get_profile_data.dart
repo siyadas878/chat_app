@@ -19,5 +19,4 @@ class GetProfileData extends ChangeNotifier {
       return null;
     }
   }
-
 }

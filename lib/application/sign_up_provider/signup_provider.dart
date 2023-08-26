@@ -6,14 +6,13 @@ import '../../presentation/widgets/warnig_snackbar.dart';
 import 'add_user_details.dart';
 import 'imagepicker_provider.dart';
 
-class SignUpProvider  extends ChangeNotifier{
-
+class SignUpProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   AddUserDetailsProvider adduser = AddUserDetailsProvider();
 
-  final TextEditingController nameController= TextEditingController();
+  final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
@@ -26,9 +25,7 @@ class SignUpProvider  extends ChangeNotifier{
       final String email = emailController.text;
       final String password = passwordController.text;
 
-      if (name.isEmpty ||
-          email.isEmpty ||
-          password.isEmpty) {
+      if (name.isEmpty || email.isEmpty || password.isEmpty) {
         warning(context, 'Please fill in all the fields.');
         return;
       }
@@ -43,14 +40,12 @@ class SignUpProvider  extends ChangeNotifier{
         return;
       }
 
-     await _auth.createUserWithEmailAndPassword(
+      await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
 
-  
       await _auth.authStateChanges().firstWhere((user) => user != null);
-
 
       String uid = _auth.currentUser!.uid;
 
@@ -59,7 +54,7 @@ class SignUpProvider  extends ChangeNotifier{
         email: email,
         password: password,
         imgpath: imagePath,
-        uid: uid,  
+        uid: uid,
       ));
 
       // ignore: use_build_context_synchronously
@@ -77,13 +72,10 @@ class SignUpProvider  extends ChangeNotifier{
         'uid': FirebaseAuth.instance.currentUser!.uid.toString(),
       });
       notifyListeners();
-
-
     } catch (error) {
       _isLoading = false;
       notifyListeners();
       warning(context, 'Error creating user: $error');
     }
   }
-
 }
