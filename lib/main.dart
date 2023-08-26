@@ -1,4 +1,7 @@
 import 'package:chat_app/application/login_provider/login_provider.dart';
+import 'package:chat_app/application/profile_data_provider/get_profile_data.dart';
+import 'package:chat_app/application/profile_data_provider/update_profile.dart';
+import 'package:chat_app/application/profile_data_provider/update_provider.dart';
 import 'package:chat_app/application/sign_up_provider/add_user_details.dart';
 import 'package:chat_app/application/sign_up_provider/imagepicker_provider.dart';
 import 'package:chat_app/application/sign_up_provider/signup_provider.dart';
@@ -32,6 +35,15 @@ class MyApp extends StatelessWidget {
         ),
          ChangeNotifierProvider(
           create: (context) => SignUpProvider(),
+        ),
+         ChangeNotifierProvider(
+          create: (context) => UpdateProvider(),
+        ),
+         ChangeNotifierProvider(
+          create: (context) => GetProfileData(),
+        ),
+         ChangeNotifierProvider(
+          create: (context) => UpdateUser(),
         ),
       ],
       child: MaterialApp(

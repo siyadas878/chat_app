@@ -1,4 +1,5 @@
 import 'package:chat_app/core/contants.dart';
+import 'package:chat_app/presentation/screens/update_screen/update_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -12,7 +13,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Messenger'),
+        title:const Text('Messenger'),
         backgroundColor: tealColor,
         actions: [
           Padding(
@@ -20,7 +21,10 @@ class HomeScreen extends StatelessWidget {
             child: PopupMenuButton(
               child:const Icon(FontAwesomeIcons.ellipsisVertical),
               onSelected: (value) {
-                if (value == 1) {
+                if (value==0) {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateScreen(),));
+                }
+                else if (value == 1) {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
@@ -78,14 +82,23 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: SafeArea(child: ListView.builder(
+        padding: EdgeInsets.symmetric(horizontal: 5),
+        itemCount: 10,
         itemBuilder: (context, index) {
           return const ListTile(
-            leading: CircleAvatar(),
+            leading: CircleAvatar(radius: 35,),
             title: Text('title'),
             subtitle: Text('subtitle'),
           );
         },
       )),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: tealColor,
+        child: Icon(FontAwesomeIcons.addressBook),
+        onPressed: () {
+        
+      },
+      ),
     );
   }
 }
