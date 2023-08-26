@@ -86,7 +86,6 @@ class UpdateScreen extends StatelessWidget {
                                             fit: BoxFit.cover,
                                           );
                                         },
-                                        // child:
                                       ),
                               ),
                             ),
@@ -101,7 +100,6 @@ class UpdateScreen extends StatelessWidget {
                       SizedBox(height: size.height * 0.07),
                       TealLoginButton(
                           onPressed: () async {
-                            print(imagepic.imageUrl.toString());
                             try {
                               context.read<UpdateProvider>().updatedetails(
                                   context,

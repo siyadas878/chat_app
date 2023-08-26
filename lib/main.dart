@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import 'application/profile_data_provider/get_all_user.dart';
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -44,6 +46,9 @@ class MyApp extends StatelessWidget {
         ),
          ChangeNotifierProvider(
           create: (context) => UpdateUser(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => GetallUsersProvider(),
         ),
       ],
       child: MaterialApp(

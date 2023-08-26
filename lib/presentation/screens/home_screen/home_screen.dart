@@ -1,4 +1,5 @@
 import 'package:chat_app/core/contants.dart';
+import 'package:chat_app/presentation/screens/search_screen/search_screen.dart';
 import 'package:chat_app/presentation/screens/update_screen/update_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class HomeScreen extends StatelessWidget {
               child:const Icon(FontAwesomeIcons.ellipsisVertical),
               onSelected: (value) {
                 if (value==0) {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => UpdateScreen(),));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) =>const UpdateScreen(),));
                 }
                 else if (value == 1) {
                   showDialog(
@@ -82,7 +83,7 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       body: SafeArea(child: ListView.builder(
-        padding: EdgeInsets.symmetric(horizontal: 5),
+        padding:const EdgeInsets.symmetric(horizontal: 5),
         itemCount: 10,
         itemBuilder: (context, index) {
           return const ListTile(
@@ -94,9 +95,9 @@ class HomeScreen extends StatelessWidget {
       )),
       floatingActionButton: FloatingActionButton(
         backgroundColor: tealColor,
-        child: Icon(FontAwesomeIcons.addressBook),
+        child:const Icon(FontAwesomeIcons.addressBook),
         onPressed: () {
-        
+        Navigator.push(context, MaterialPageRoute(builder: (context) =>const SearchScreen(),));
       },
       ),
     );
