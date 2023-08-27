@@ -14,7 +14,7 @@ class MessageCreationProvider extends ChangeNotifier {
     List<String> charList = addinguid.split('');
     charList.sort();
     String uniqueId = charList.join();
-    
+
     try {
       MessageModel message = MessageModel(
         fromId: fromId,
@@ -29,13 +29,15 @@ class MessageCreationProvider extends ChangeNotifier {
 
       Map<String, dynamic> messageData = message.toJson();
 
-      await usersCollection.doc(uniqueId).set({'id': uniqueId, 'fromId': fromId, 'userId': userId});
+      await usersCollection
+          .doc(uniqueId)
+          .set({'id': uniqueId, 'fromId': fromId, 'userId': userId});
 
       await usersCollection
           .doc(uniqueId)
           .collection('messages')
-          .add(messageData); 
-      
+          .add(messageData);
+
       Timer(const Duration(seconds: 1), () {
         messageController.clear();
         notifyListeners();
@@ -46,35 +48,34 @@ class MessageCreationProvider extends ChangeNotifier {
   }
 
   Future<List<MessageModel>> getAllMessages(String fromId) async {
-  List<MessageModel> allmessages = [];
-  String addinguid = fromId + userId;
-  List<String> charList = addinguid.split('');
-  charList.sort();
-  String uniqueId = charList.join();
+    List<MessageModel> allmessages = [];
+    String addinguid = fromId + userId;
+    List<String> charList = addinguid.split('');
+    charList.sort();
+    String uniqueId = charList.join();
 
-  try {
-    var userCollectionSnapshot = await FirebaseFirestore.instance
-        .collection('chat')
-        .doc(uniqueId)
-        .collection('messages')
-        .orderBy('time', descending: false)
-        .get();
+    try {
+      var userCollectionSnapshot = await FirebaseFirestore.instance
+          .collection('chat')
+          .doc(uniqueId)
+          .collection('messages')
+          .orderBy('time', descending: false)
+          .get();
 
-    List<MessageModel> message = userCollectionSnapshot.docs.map((doc) {
-      Map<String, dynamic> data = doc.data();
-      return MessageModel.fromJson(data);
-    }).toList();
+      List<MessageModel> message = userCollectionSnapshot.docs.map((doc) {
+        Map<String, dynamic> data = doc.data();
+        return MessageModel.fromJson(data);
+      }).toList();
 
-    allmessages = message;
-    notifyListeners();
-    return allmessages;
-  } catch (e) {
-    log('Error getting messages: $e');
+      allmessages = message;
+      notifyListeners();
+      return allmessages;
+    } catch (e) {
+      log('Error getting messages: $e');
+    }
+
+    return [];
   }
-
-  return [];
-}
-
 
   @override
   void dispose() {

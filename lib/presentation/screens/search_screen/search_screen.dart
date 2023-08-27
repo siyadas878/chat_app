@@ -1,4 +1,6 @@
+import 'package:chat_app/core/contants.dart';
 import 'package:chat_app/presentation/screens/message_screen/message_screen.dart';
+import 'package:chat_app/presentation/screens/search_screen/widgets/search_field.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../application/profile_data_provider/get_all_user.dart';
@@ -12,7 +14,7 @@ class SearchScreen extends StatelessWidget {
     var controller = Provider.of<GetallUsersProvider>(context).searchController;
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(backgroundColor: tealColor,),
       body: SafeArea(
         child: Column(
           children: [
@@ -21,32 +23,7 @@ class SearchScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: ChangeNotifierProvider<GetallUsersProvider>.value(
                 value: Provider.of<GetallUsersProvider>(context, listen: false),
-                child: TextField(
-                  controller: controller,
-                  onChanged: (value) {
-                    Provider.of<GetallUsersProvider>(context, listen: false)
-                        .searchlist(value);
-                  },
-                  decoration: InputDecoration(
-                    filled: true,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 4),
-                    fillColor: Colors.grey[300],
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30),
-                      borderSide: BorderSide.none,
-                    ),
-                    labelText: 'Search',
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () {
-                        controller.clear();
-                        Provider.of<GetallUsersProvider>(context, listen: false)
-                            .searchlist('');
-                      },
-                    ),
-                  ),
-                ),
+                child: SearchField(controller: controller),
               ),
             ),
             SizedBox(
@@ -80,7 +57,8 @@ class SearchScreen extends StatelessWidget {
                             final user = userList[index];
                             return ListTile(
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => ChatScreen(fromId: user.uid.toString()),));
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => 
+                                ChatScreen(fromId: user.uid.toString(),title: user.name!,imageUrl: user.imgpath!,),));
                               },
                               leading: CircleAvatar(
                                 radius: 30,
@@ -103,3 +81,4 @@ class SearchScreen extends StatelessWidget {
     );
   }
 }
+

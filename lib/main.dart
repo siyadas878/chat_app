@@ -1,3 +1,4 @@
+import 'package:chat_app/application/home_list_provider/home_list_provider.dart';
 import 'package:chat_app/application/login_provider/login_provider.dart';
 import 'package:chat_app/application/message_provider/message_provider.dart';
 import 'package:chat_app/application/profile_data_provider/get_profile_data.dart';
@@ -11,7 +12,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-
 import 'application/profile_data_provider/get_all_user.dart';
 
 void main() async {
@@ -53,6 +53,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: (context) => MessageCreationProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => HomeListProvider(),
         ),
       ],
       child: MaterialApp(

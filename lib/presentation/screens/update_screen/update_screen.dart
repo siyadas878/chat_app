@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:chat_app/domain/user_model/user_model.dart';
+import 'package:chat_app/presentation/widgets/appbar_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +23,7 @@ class UpdateScreen extends StatelessWidget {
     var uid = FirebaseAuth.instance.currentUser!.uid.toString();
     return Scaffold(
       appBar: AppBar(
+        title:const AppLogo(size: 30, head: 'Edit profile'),
         backgroundColor: tealColor,
       ),
       body: SafeArea(
@@ -35,13 +37,9 @@ class UpdateScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        height: size.height * 0.04,
+                        height: size.height * 0.2,
                       ),
-                      const Text(
-                        'Update Profile',
-                        style: TextStyle(color: tealColor, fontSize: 13),
-                      ),
-                      SizedBox(height: size.height * 0.07),
+                     
                       Container(
                         width: size.width * 0.3,
                         height: size.height * 0.15,
@@ -109,10 +107,6 @@ class UpdateScreen extends StatelessWidget {
                                   context
                                       .read<UpdateProvider>()
                                       .nameController
-                                      .text,
-                                  context
-                                      .read<UpdateProvider>()
-                                      .usernameController
                                       .text);
                             } catch (e) {
                               log(e.toString());

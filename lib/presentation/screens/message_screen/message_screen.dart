@@ -1,13 +1,19 @@
+import 'package:chat_app/presentation/screens/message_screen/widgets/message_field.dart';
+import 'package:chat_app/presentation/widgets/appbar_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../../application/message_provider/message_provider.dart';
 import '../../../domain/message_model/message_model.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class ChatScreen extends StatelessWidget {
   final String fromId;
+  final String title;
+  final String imageUrl;
 
-  const ChatScreen({Key? key, required this.fromId}) : super(key: key);
+  const ChatScreen({Key? key, required this.fromId, required this.title,required this.imageUrl})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +22,13 @@ class ChatScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: size.height*0.08,
+        leading: Row(
+          children: [
+            CircleAvatar(backgroundImage: NetworkImage(imageUrl),),
+          ],
+        ),
+        title: AppLogo(size: 30, head: title),
         backgroundColor: Colors.teal,
       ),
       body: SafeArea(
@@ -33,7 +46,7 @@ class ChatScreen extends StatelessWidget {
                       } else if (!snapshot.hasData ||
                           snapshot.data == null ||
                           snapshot.data!.isEmpty) {
-                        return const Center(child: Text('No data available'));
+                        return const Center(child: Text('No chats'));
                       }
 
                       final messages = snapshot.data!;
@@ -44,23 +57,47 @@ class ChatScreen extends StatelessWidget {
                             SizedBox(height: size.height * 0.02),
                         itemCount: messages.length,
                         itemBuilder: (context, index) {
-                          return Align(
-                            alignment: messages[index].fromId == userId
-                                ? Alignment.centerLeft
-                                : Alignment.centerRight,
-                            child: Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                color: messages[index].fromId == userId
-                                    ? Colors.teal
-                                    : Colors.teal[300],
-                                borderRadius: BorderRadius.circular(20),
+                          DateTime postDateTime =
+                              DateTime.parse(messages[index].time.toString());
+                          bool isCurrentUser = messages[index].fromId == userId;
+
+                          return Column(
+                            crossAxisAlignment: isCurrentUser
+                                ? CrossAxisAlignment.start
+                                : CrossAxisAlignment.end,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: isCurrentUser
+                                      ? Colors.teal
+                                      : Colors.teal[300],
+                                  borderRadius: isCurrentUser
+                                      ? const BorderRadius.only(
+                                          topLeft: Radius.circular(20),
+                                          topRight: Radius.circular(20),
+                                          bottomRight: Radius.circular(20),
+                                        )
+                                      : const BorderRadius.only(
+                                          topLeft: Radius.circular(20),
+                                          topRight: Radius.circular(20),
+                                          bottomLeft: Radius.circular(20),
+                                        ),
+                                ),
+                                child: Text(
+                                  messages[index].message!,
+                                  style: const TextStyle(color: Colors.white),
+                                ),
                               ),
-                              child: Text(
-                                messages[index].message!,
-                                style: const TextStyle(color: Colors.white),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 4),
+                                child: Text(
+                                  timeago
+                                      .format(postDateTime, allowFromNow: true)
+                                      .toString(),
+                                ),
                               ),
-                            ),
+                            ],
                           );
                         },
                       );
@@ -72,27 +109,12 @@ class ChatScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                height: size.height * 0.06,
+                height: size.height * 0.07,
                 color: Colors.white,
                 child: Row(
                   children: [
-                    Expanded(
-                      child: TextField(
-                        controller: context
-                            .read<MessageCreationProvider>()
-                            .messageController,
-                        maxLines: 1,
-                        decoration: InputDecoration(
-                          fillColor: Colors.white,
-                          hintText: 'Write your message...',
-                          hintStyle: TextStyle(
-                            color: Colors.black.withOpacity(0.3),
-                          ),
-                          border: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(30)),
-                          ),
-                        ),
-                      ),
+                   const Expanded(
+                      child: MessageField(),
                     ),
                     const SizedBox(width: 10),
                     InkWell(
@@ -123,3 +145,4 @@ class ChatScreen extends StatelessWidget {
     );
   }
 }
+

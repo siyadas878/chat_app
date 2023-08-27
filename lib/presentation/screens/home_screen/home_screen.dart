@@ -1,20 +1,27 @@
-import 'package:chat_app/core/contants.dart';
-import 'package:chat_app/presentation/screens/home_screen/widgets/floating_button.dart';
-import 'package:chat_app/presentation/screens/update_screen/update_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:async';
+
+import 'package:chat_app/application/home_list_provider/home_list_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../../../core/contants.dart';
+import '../../widgets/appbar_text.dart';
 import '../../widgets/warnig_snackbar.dart';
 import '../login_screen/login_screen.dart';
+import '../message_screen/message_screen.dart';
+import 'widgets/floating_button.dart';
+import '../update_screen/update_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Messenger'),
+        title: const AppLogo(size: 30, head: 'Messenger'),
         backgroundColor: tealColor,
         actions: [
           Padding(
@@ -33,7 +40,7 @@ class HomeScreen extends StatelessWidget {
                     context: context,
                     builder: (context) => AlertDialog(
                       title: const Text('Delete'),
-                      content: const Text('Do yo want to LogOut'),
+                      content: const Text('Do you want to LogOut?'),
                       actions: <Widget>[
                         TextButton(
                           child: const Text('CANCEL'),
@@ -46,7 +53,6 @@ class HomeScreen extends StatelessWidget {
                           onPressed: () async {
                             try {
                               await FirebaseAuth.instance.signOut();
-                              // ignore: use_build_context_synchronously
                               Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
@@ -65,40 +71,84 @@ class HomeScreen extends StatelessWidget {
               },
               itemBuilder: (context) => [
                 const PopupMenuItem(
-                    value: 0,
-                    child: Text(
-                      'Edit',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                      ),
-                    )),
+                  value: 0,
+                  child: Text(
+                    'Edit',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
                 const PopupMenuItem(
-                    value: 1,
-                    child: Text(
-                      'LogOut',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                      ),
-                    )),
+                  value: 1,
+                  child: Text(
+                    'LogOut',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
       body: SafeArea(
-          child: ListView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: 5),
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return const ListTile(
-            leading: CircleAvatar(
-              radius: 35,
+        child: Column(
+          children: [
+            SizedBox(height: size.height*0.02,),
+            Expanded(
+              child: Consumer<HomeListProvider>(
+                builder: (context, value, child) {
+                  return FutureBuilder<void>(
+                    future: value.getAllUsers(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return const Center(child: Text('Error fetching data'));
+                      } else {
+                        final userList = value.allusers;
+            
+                        if (userList.isEmpty) {
+                          return const Center(child: Text('No data available'));
+                        }
+            
+                        return ListView.separated(
+                          separatorBuilder: (context, index) => SizedBox(
+                            height: size.height * 0.02,
+                          ),
+                          itemCount: userList.length,
+                          itemBuilder: (context, index) {
+                            final user = userList[index];
+                            return ListTile(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChatScreen(
+                                      fromId: user.uid.toString(),
+                                      title: user.name!,
+                                      imageUrl: user.imgpath!,
+                                    ),
+                                  ),
+                                );
+                              },
+                              leading: CircleAvatar(
+                                radius: 30,
+                                backgroundImage: NetworkImage(user.imgpath.toString()),
+                              ),
+                              title: Text(user.name!),
+                            );
+                          },
+                        );
+                      }
+                    },
+                  );
+                },
+              ),
             ),
-            title: Text('title'),
-            subtitle: Text('subtitle'),
-          );
-        },
-      )),
+          ],
+        ),
+      ),
       floatingActionButton: const FloatingButton(),
     );
   }

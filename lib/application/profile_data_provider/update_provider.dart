@@ -13,6 +13,8 @@ class UpdateUser extends ChangeNotifier {
       UserModel user = UserModel(
         name: data.name,
         imgpath: data.imgpath,
+        email: data.email,
+        uid: data.uid
       );
 
       CollectionReference usersCollection =
