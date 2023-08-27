@@ -1,3 +1,4 @@
+import 'package:chat_app/presentation/screens/drawer_screen/drawer_screen.dart';
 import 'package:chat_app/presentation/screens/home_screen/widgets/floating_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,8 +17,12 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await context.read<HomeListProvider>().getAllUsers();
+    });
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      drawer: DrawerScreen(),
       appBar: AppBar(
         title: const AppLogo(size: 30, head: 'Messenger'),
         backgroundColor: tealColor,
@@ -134,7 +139,8 @@ class HomeScreen extends StatelessWidget {
                         },
                         leading: CircleAvatar(
                           radius: 30,
-                          backgroundImage: NetworkImage(user.imgpath.toString()),
+                          backgroundImage:
+                              NetworkImage(user.imgpath.toString()),
                         ),
                         title: Text(
                           user.name!,
