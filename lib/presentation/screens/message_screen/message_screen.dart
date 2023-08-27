@@ -22,13 +22,15 @@ class ChatScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        
         toolbarHeight: size.height*0.08,
-        leading: Row(
+        title: Row(
           children: [
             CircleAvatar(backgroundImage: NetworkImage(imageUrl),),
+            SizedBox(width: size.width*0.02,),
+            AppLogo(size: 30, head: title),
           ],
         ),
-        title: AppLogo(size: 30, head: title),
         backgroundColor: Colors.teal,
       ),
       body: SafeArea(
@@ -86,7 +88,7 @@ class ChatScreen extends StatelessWidget {
                                 ),
                                 child: Text(
                                   messages[index].message!,
-                                  style: const TextStyle(color: Colors.white),
+                                  style: const TextStyle(color: Colors.white,),
                                 ),
                               ),
                               Padding(

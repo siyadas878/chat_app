@@ -65,7 +65,8 @@ class SearchScreen extends StatelessWidget {
                                 backgroundImage:
                                     NetworkImage(user.imgpath.toString()),
                               ),
-                              title: Text(user.name!),
+                              title: Text(user.name!,
+                              style:const TextStyle(fontWeight: FontWeight.bold)),
                             );
                           },
                         );

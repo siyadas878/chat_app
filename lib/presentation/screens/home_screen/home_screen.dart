@@ -1,16 +1,14 @@
-import 'dart:async';
-
-import 'package:chat_app/application/home_list_provider/home_list_provider.dart';
+import 'package:chat_app/presentation/screens/home_screen/widgets/floating_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../../../application/home_list_provider/home_list_provider.dart';
 import '../../../core/contants.dart';
 import '../../widgets/appbar_text.dart';
 import '../../widgets/warnig_snackbar.dart';
 import '../login_screen/login_screen.dart';
 import '../message_screen/message_screen.dart';
-import 'widgets/floating_button.dart';
 import '../update_screen/update_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -28,13 +26,14 @@ class HomeScreen extends StatelessWidget {
             padding: const EdgeInsets.only(right: 10),
             child: PopupMenuButton(
               child: const Icon(FontAwesomeIcons.ellipsisVertical),
-              onSelected: (value) {
+              onSelected: (value) async {
                 if (value == 0) {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const UpdateScreen(),
-                      ));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const UpdateScreen(),
+                    ),
+                  );
                 } else if (value == 1) {
                   showDialog(
                     context: context,
@@ -53,10 +52,12 @@ class HomeScreen extends StatelessWidget {
                           onPressed: () async {
                             try {
                               await FirebaseAuth.instance.signOut();
+                              // ignore: use_build_context_synchronously
                               Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const LoginScreen()),
+                                  builder: (context) => const LoginScreen(),
+                                ),
                                 (route) => false,
                               );
                             } catch (e) {
@@ -96,51 +97,50 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(height: size.height*0.02,),
+            SizedBox(height: size.height * 0.02),
             Expanded(
               child: Consumer<HomeListProvider>(
                 builder: (context, value, child) {
-                  return FutureBuilder<void>(
-                    future: value.getAllUsers(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return const Center(child: Text('Error fetching data'));
-                      } else {
-                        final userList = value.allusers;
-            
-                        if (userList.isEmpty) {
-                          return const Center(child: Text('No data available'));
-                        }
-            
-                        return ListView.separated(
-                          separatorBuilder: (context, index) => SizedBox(
-                            height: size.height * 0.02,
-                          ),
-                          itemCount: userList.length,
-                          itemBuilder: (context, index) {
-                            final user = userList[index];
-                            return ListTile(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ChatScreen(
-                                      fromId: user.uid.toString(),
-                                      title: user.name!,
-                                      imageUrl: user.imgpath!,
-                                    ),
-                                  ),
-                                );
-                              },
-                              leading: CircleAvatar(
-                                radius: 30,
-                                backgroundImage: NetworkImage(user.imgpath.toString()),
+                  if (value.isLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  final userList = value.allusers;
+
+                  if (userList.isEmpty) {
+                    return const Center(child: Text('No data available'));
+                  }
+
+                  return ListView.separated(
+                    separatorBuilder: (context, index) =>
+                        SizedBox(height: size.height * 0.02),
+                    itemCount: userList.length,
+                    itemBuilder: (context, index) {
+                      final user = userList[index];
+                      return ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChatScreen(
+                                fromId: user.uid.toString(),
+                                title: user.name!,
+                                imageUrl: user.imgpath!,
                               ),
-                              title: Text(user.name!),
-                            );
-                          },
-                        );
-                      }
+                            ),
+                          );
+                        },
+                        leading: CircleAvatar(
+                          radius: 30,
+                          backgroundImage: NetworkImage(user.imgpath.toString()),
+                        ),
+                        title: Text(
+                          user.name!,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      );
                     },
                   );
                 },
